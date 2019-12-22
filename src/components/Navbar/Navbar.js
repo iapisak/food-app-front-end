@@ -3,22 +3,45 @@ import axios from 'axios';
 
 class Navbar extends Component {
     state = {
-        post_code: ""
+        postal_code: "",
+        result: [],
     }
 
     handleOnChange = (e) => {
-        this.setState({ post_code: e.target.value })
+        this.setState({ postal_code: e.target.value })
     }
 
-    searchRestaurant = (e) => {
-        e.preventDefault()
-        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.post_code}`)
+    createNewRestaurant = () => {
+        axios.put(`${process.env.REACT_APP_API_URL}/restaurant/create`, this.state)
         .then(res => {
             console.log(res)
-            this.props.setThisState(res.data)
-            this.setState({ post_code: '' })
         })
         .catch(err => console.log(err))
+    }
+
+    searchRestaurant = async (e) => {
+        e.preventDefault()
+        try {
+            const checkZipcode = await axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
+            return this.setState({ restaurant: checkZipcode, postal_code: '' })
+        } catch {
+            fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1?`, {
+                method: "GET",
+                headers: {
+                    "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+                    "x-rapidapi-key": "fe0837f0a2msh7cb5dab4b0d98c6p1b7249jsn44b6d3c3edbf"
+                },
+            })
+            .then(stream => stream.json())
+            .then(res => {
+                console.log(res)
+                this.setState({ result: res.result.data })
+                this.createNewRestaurant()
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
     }
 
     render() {
