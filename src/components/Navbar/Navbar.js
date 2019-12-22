@@ -1,6 +1,26 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Navbar extends Component {
+    state = {
+        post_code: ""
+    }
+
+    handleOnChange = (e) => {
+        this.setState({ post_code: e.target.value })
+    }
+
+    searchRestaurant = (e) => {
+        e.preventDefault()
+        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.post_code}`)
+        .then(res => {
+            console.log(res)
+            this.props.setThisState(res.data)
+            this.setState({ post_code: '' })
+        })
+        .catch(err => console.log(err))
+    }
+
     render() {
         return (
         <>
@@ -26,8 +46,8 @@ class Navbar extends Component {
                             </div>
                         </li>
                     </ul>
-                    <form className="form-inline my-2 my-md-0">
-                        <input className="form-control" type="text" placeholder="Search" />
+                    <form onSubmit={ this.searchRestaurant } className="form-inline my-2 my-md-0">
+                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search" />
                     </form>
                     <ul className="navbar-nav">
                         <li className="nav-item">
