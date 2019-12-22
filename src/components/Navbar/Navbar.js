@@ -19,12 +19,13 @@ class Navbar extends Component {
         .catch(err => console.log(err))
     }
 
-    searchRestaurant = async (e) => {
+    searchRestaurant = (e) => {
         e.preventDefault()
-        try {
-            const checkZipcode = await axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
-            return this.setState({ restaurant: checkZipcode, postal_code: '' })
-        } catch {
+        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
+        .then(res => {
+            this.setState({ result: res.data.data.result })
+        })
+        .catch(() => {
             fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1?`, {
                 method: "GET",
                 headers: {
@@ -41,7 +42,7 @@ class Navbar extends Component {
             .catch(err => {
                 console.log(err)
             })
-        }
+        })
     }
 
     render() {
