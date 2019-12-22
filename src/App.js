@@ -6,7 +6,7 @@ import './App.css';
 
 class App extends Component {
     state = {
-      currentUser: localStorage.getItem('uid'),
+      // currentUser: localStorage.getItem('uid'),
       restarant: [],
     }
 
