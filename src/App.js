@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Navbar from './components/Navbar/Navbar'
+
 import './App.css';
 
-function App() {
-  return (
-    <div>
-      <h1>Hello</h1>
-    </div>
-  );
+
+class App extends Component {
+    state = {
+      currentUser: localStorage.getItem('uid'),
+      restarant: [],
+    }
+
+    setThisState = (restaurant) => {
+      this.setState({ restaurant })
+    }
+
+    render() {
+      return (
+        <>
+          <Navbar 
+            setThisState={ this.setThisState }
+          />
+          <h1>Hello</h1>
+        </>
+      )
+    }
 }
 
 export default App;
