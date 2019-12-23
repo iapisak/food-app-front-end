@@ -21,28 +21,36 @@ class Navbar extends Component {
 
     searchRestaurant = (e) => {
         e.preventDefault()
-        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
-        .then(res => {
-            this.setState({ result: res.data.data.result })
-        })
-        .catch(() => {
-            fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1?`, {
-                method: "GET",
-                headers: {
-                    "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
-                    "x-rapidapi-key": "fe0837f0a2msh7cb5dab4b0d98c6p1b7249jsn44b6d3c3edbf"
-                },
-            })
-            .then(stream => stream.json())
+        if (this.state.postal_code[0] === "9" && this.state.postal_code[1] === "5") {
+            console.log('San Jose Area')
+            axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
             .then(res => {
-                console.log(res)
-                this.setState({ result: res.result.data })
-                this.createNewRestaurant()
+                this.setState({ result: res.data.data.result })
+                this.props.setThisState( res.data.data.result )
             })
-            .catch(err => {
-                console.log(err)
+            .catch(() => {
+                fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1`, {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+                        "x-rapidapi-key": "fe0837f0a2msh7cb5dab4b0d98c6p1b7249jsn44b6d3c3edbf"
+                    },
+                })
+                .then(stream => stream.json())
+                .then(res => {
+                    console.log(res)
+                    this.setState({ result: res.result.data })
+                    this.props.setThisState( res.data.data.result )
+                    this.createNewRestaurant()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             })
-        })
+        } else {
+            console.log('Not San Jose area. Please try again')
+        }
+
     }
 
     render() {

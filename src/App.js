@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
-import Navbar from './components/Navbar/Navbar'
+import { withRouter } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Routes from './config/Routes';
 
 import './App.css';
 
 
 class App extends Component {
     state = {
-      // currentUser: localStorage.getItem('uid'),
-      restarant: [],
+      restaurants: [],
     }
 
     setThisState = (restaurant) => {
-      this.setState({ restaurant })
+      this.setState({ restaurant: restaurant })
     }
 
     render() {
       return (
         <>
           <Navbar 
-            setThisState={ this.setThisState }
-          />
-          <h1>Hello</h1>
+            setThisState={ this.setThisState } />
+          <main>
+            <Routes 
+              restaurants={ this.state.restaurants } />
+          </main>
         </>
       )
     }
 }
 
-export default App;
+export default withRouter(App);
