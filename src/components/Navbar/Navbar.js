@@ -50,7 +50,6 @@ class Navbar extends Component {
         } else {
             console.log('Not San Jose area. Please try again')
         }
-
     }
 
     render() {

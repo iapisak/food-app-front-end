@@ -4,7 +4,9 @@ const Restaurant = (props) => {
     return (
         <div>
             <div>{ props.name }</div>
-            <div>{ props.address }</div>
+            <div>Cuisine : { props.cuisines[0] }</div>
+            <div>Address : { props.address.formatted }</div>
+            <div>Phone : { props.phone} </div>
         </div>
     )
 }

@@ -5,14 +5,13 @@ import Routes from './config/Routes';
 
 import './App.css';
 
-
 class App extends Component {
     state = {
       restaurants: [],
     }
 
     setThisState = (restaurant) => {
-      this.setState({ restaurant: restaurant })
+      this.setState({ restaurants: restaurant })
     }
 
     render() {
