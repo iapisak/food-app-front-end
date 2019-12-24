@@ -10,10 +10,10 @@ const Menu = (props) => {
                     </svg>
                 </div>
                 <div className="col p-3 d-flex flex-column position-static">
-                    <h3 className="mb-0">{ props.name }</h3>
+                    <h3 className="mb-3">{ props.name }</h3>
                     
-                    <p className="card-text mb-auto">Detail: { props.menu_description }</p>
-                    <p className="card-text mb-auto">Choice: { props.description }</p>
+                    <p className="card-text mb-2">{ props.menu_description }</p>
+                    <p className="card-text mb-2">Choice: { props.description }</p>
                     <div className="d-inline-block text-muted">Type: { props.type }</div>
                     {/* { props.price[0] && <p>Price: { props.price[0].priceString }</p> } */}
                     { props.price.length <=0 ? 
