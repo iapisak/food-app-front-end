@@ -26,7 +26,7 @@ class Navbar extends Component {
             axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
             .then(res => {
                 this.setState({ result: res.data.data.result })
-                this.props.setThisState( res.data.data )
+                this.props.setThisState( this.state )
             })
             .catch(() => {
                 fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1`, {
@@ -38,9 +38,8 @@ class Navbar extends Component {
                 })
                 .then(stream => stream.json())
                 .then(res => {
-                    console.log(res)
                     this.setState({ result: res.result.data })
-                    this.props.setThisState( res.data.data.result )
+                    this.props.setThisState( this.state )
                     this.createNewRestaurant()
                 })
                 .catch(err => {
