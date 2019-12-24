@@ -3,12 +3,25 @@ import React from 'react';
 const Menu = (props) => {
     return (
         <div>
-            <div>{ props.name }</div>
-            <div>Detail: { props.menu_description }</div>
-            <div>Choice: { props.description }</div>
-            <div>Type: { props.type }</div>
-            {/* { props.price[0] && <p>Price: { props.price[0].priceString }</p> } */}
-            { props.price.length <=0 ? <p>Price: </p> : <p>Price: { props.price[0].priceString }</p> }
+            <div className="row no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div className="col-auto d-none d-lg-block">
+                    <svg className="bd-placeholder-img" width="400" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect>
+                    {/* <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text> */}
+                    </svg>
+                </div>
+                <div className="col p-3 d-flex flex-column position-static">
+                    <h3 className="mb-0">{ props.name }</h3>
+                    
+                    <p className="card-text mb-auto">Detail: { props.menu_description }</p>
+                    <p className="card-text mb-auto">Choice: { props.description }</p>
+                    <div className="d-inline-block text-muted">Type: { props.type }</div>
+                    {/* { props.price[0] && <p>Price: { props.price[0].priceString }</p> } */}
+                    { props.price.length <=0 ? 
+                        <p className="mb-1 text-muted">Price: </p> 
+                    : 
+                        <p className="mb-1 text-muted">Price: { props.price[0].priceString }</p> }
+                </div>
+            </div>
         </div>
     )
 }

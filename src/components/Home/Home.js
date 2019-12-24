@@ -6,7 +6,7 @@ const Home = (props) => {
         props.restaurants.map(data => (
         <>
             <div>{ data.postal_code }</div>
-            <div>
+            <div className="row mb-2">
 
             { data.result.map(restaurant => (
                 <Restaurant key={ restaurant.restaurant_id}
@@ -17,6 +17,7 @@ const Home = (props) => {
             )) }
             
             </div>
+
         </>
     ))
     )

@@ -28,7 +28,7 @@ class App extends Component {
         <>
           <Navbar 
             setThisState={ this.setThisState } />
-          <main>
+          <main className="container">
             <Routes 
               restaurants={ this.state.restaurants } />
           </main>
