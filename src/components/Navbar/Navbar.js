@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class Navbar extends Component {
@@ -27,6 +28,8 @@ class Navbar extends Component {
             .then(res => {
                 this.setState({ result: res.data.data.result })
                 this.props.setThisState( this.state )
+                this.setState({ postal_code: ''})
+                this.props.history.push('/');
             })
             .catch(() => {
                 fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1`, {
@@ -41,6 +44,8 @@ class Navbar extends Component {
                     this.setState({ result: res.result.data })
                     this.props.setThisState( this.state )
                     this.createNewRestaurant()
+                    this.setState({ postal_code: ''})
+                    this.props.history.push('/');
                 })
                 .catch(err => {
                     console.log(err)
@@ -77,7 +82,7 @@ class Navbar extends Component {
                         </li>
                     </ul>
                     <form onSubmit={ this.searchRestaurant } className="form-inline my-2 my-md-0">
-                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search" />
+                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search" value={ this.state.postal_code } />
                     </form>
                     <ul className="navbar-nav">
                         <li className="nav-item">
@@ -94,4 +99,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar
+export default withRouter(Navbar);

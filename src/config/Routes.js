@@ -9,7 +9,7 @@ export default ({ restaurants }) => {
         <Switch>
 
             <Route exact path='/'
-                render={()=> <Home restaurants={ restaurants } /> }/>
+                render={()=> <Home key="home" restaurants={ restaurants } /> }/>
 
             { restaurants.map(data => (
                 data.result.map(restaurant => {
