@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
+import Navbar from './components/Navbar/Navbar';
+import Routes from './config/Routes';
+
 import './App.css';
 
-function App() {
-  return (
-    <div>
-      <h1>Hello</h1>
-    </div>
-  );
+class App extends Component {
+    state = {
+      restaurants: [],
+    }
+
+    setThisState = (restaurant) => {
+      this.setState({ restaurants: [ restaurant ] })
+    }
+
+    componentDidMount () {
+      axios.get(`${process.env.REACT_APP_API_URL}/restaurant/all`)
+      .then((res) => {
+          this.setState({ restaurants: res.data.data})
+      })
+    }
+
+    render() {
+      return (
+        <>
+          <Navbar 
+            setThisState={ this.setThisState } />
+          <main>
+            <Routes 
+              restaurants={ this.state.restaurants } />
+          </main>
+        </>
+      )
+    }
 }
 
-export default App;
+export default withRouter(App);
