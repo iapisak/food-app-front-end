@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Menu from '../Menu/Menu';
 
 class RestaurantContainer extends Component {
     state = {
@@ -41,8 +42,18 @@ class RestaurantContainer extends Component {
     render() {
         return (
             <>
-            <h3>{ this.props.name }</h3>
-            <h4>{ this.props.id }</h4>
+            <h2>{ this.props.name }</h2>
+            <h4>Menu</h4>
+            { this.state.menu.map(items => (
+              <Menu
+                key={ items.item_id }
+                name={ items.menu_item_name }
+                menu_description={ items.menu_item_description }
+                description= { items.subsection_description }
+                type={ items.subsection }
+                price={ items.menu_item_pricing }
+              />              
+            ))}
             </>
         )
     }
