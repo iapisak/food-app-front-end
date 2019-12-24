@@ -28,6 +28,7 @@ class Navbar extends Component {
             .then(res => {
                 this.setState({ result: res.data.data.result })
                 this.props.setThisState( this.state )
+                this.setState({ postal_code: ''})
                 this.props.history.push('/');
             })
             .catch(() => {
@@ -43,6 +44,7 @@ class Navbar extends Component {
                     this.setState({ result: res.result.data })
                     this.props.setThisState( this.state )
                     this.createNewRestaurant()
+                    this.setState({ postal_code: ''})
                     this.props.history.push('/');
                 })
                 .catch(err => {
@@ -80,7 +82,7 @@ class Navbar extends Component {
                         </li>
                     </ul>
                     <form onSubmit={ this.searchRestaurant } className="form-inline my-2 my-md-0">
-                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search" />
+                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search" value={ this.state.postal_code } />
                     </form>
                     <ul className="navbar-nav">
                         <li className="nav-item">
