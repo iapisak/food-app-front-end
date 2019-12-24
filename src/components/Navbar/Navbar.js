@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class Navbar extends Component {
@@ -27,6 +28,7 @@ class Navbar extends Component {
             .then(res => {
                 this.setState({ result: res.data.data.result })
                 this.props.setThisState( this.state )
+                this.props.history.push('/');
             })
             .catch(() => {
                 fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1`, {
@@ -41,6 +43,7 @@ class Navbar extends Component {
                     this.setState({ result: res.result.data })
                     this.props.setThisState( this.state )
                     this.createNewRestaurant()
+                    this.props.history.push('/');
                 })
                 .catch(err => {
                     console.log(err)
@@ -94,4 +97,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar
+export default withRouter(Navbar);
