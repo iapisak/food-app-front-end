@@ -19,8 +19,7 @@ class RestaurantContainer extends Component {
         .then(res => {
             this.setState({ menu: res.data.data.menu })
         })
-        .catch(err => {
-            console.log('load')
+        .catch(() => {
             fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurant/${this.state.restaurant_id}/menuitems?page=1`, {
                 "method": "GET",
                 "headers": {
