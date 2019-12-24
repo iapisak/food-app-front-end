@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Search from '../components/Home/Search';
+import Home from '../components/Home/Home'
+import RestaurantContainer from '../components/Container/RestaurantContainer';
 
 export default ({ restaurants }) => {
 
@@ -8,12 +9,16 @@ export default ({ restaurants }) => {
         <Switch>
 
             <Route exact path='/'
-                render={()=> <Search restaurants={ restaurants }/> } />
-            
-            { restaurants.map(restaurant => {
-                return <Route path={`/${ restaurant.restaurant_name }`} key={ restaurant.restaurant_id } 
-                        // render={}
-            />})}
+                render={()=> <Home restaurants={ restaurants } /> }/>
+
+            { restaurants.map(data => (
+                data.result.map(restaurant => {
+                   return <Route path={`/${ restaurant.restaurant_name }`} key={ restaurant.restaurant_id } 
+                            render={() =>  <RestaurantContainer 
+                                                name={ restaurant.restaurant_name }
+                                                id={ restaurant.restaurant_id } /> }/>
+                })
+            ))}
 
         </Switch>
     )
