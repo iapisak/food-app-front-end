@@ -12,7 +12,7 @@ export default ({ restaurants }) => {
                 render={()=> <Home key="home" restaurants={ restaurants } /> }/>
 
             { restaurants.map(data => (
-                data.result.map(restaurant => {
+                data.restaurant.map(restaurant => {
                    return <Route path={`/${ restaurant.restaurant_name }`} key={ restaurant.restaurant_id } 
                             render={() =>  <RestaurantContainer 
                                                 name={ restaurant.restaurant_name }

@@ -5,7 +5,7 @@ import axios from 'axios';
 class Navbar extends Component {
     state = {
         postal_code: "",
-        result: [],
+        restaurant: [],
     }
 
     handleOnChange = (e) => {
@@ -26,7 +26,7 @@ class Navbar extends Component {
             console.log('San Jose Area')
             axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
             .then(res => {
-                this.setState({ result: res.data.data.result })
+                this.setState({ restaurant: res.data.data.restaurant })
                 this.props.setThisState( this.state )
                 this.setState({ postal_code: ''})
                 this.props.history.push('/');
@@ -41,7 +41,7 @@ class Navbar extends Component {
                 })
                 .then(stream => stream.json())
                 .then(res => {
-                    this.setState({ result: res.result.data })
+                    this.setState({ restaurant: res.result.data })
                     this.props.setThisState( this.state )
                     this.createNewRestaurant()
                     this.setState({ postal_code: ''})
@@ -59,7 +59,7 @@ class Navbar extends Component {
     render() {
         return (
         <div className="container">
-            <a className="navbar-brand" href="/"><h1>Logo here</h1></a>
+            <a className="navbar-brand" href="/"><h1>Delivery.com</h1></a>
             <nav className="navbar navbar-expand-xl navbar-dark bg-dark">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -69,11 +69,8 @@ class Navbar extends Component {
                         <li className="nav-item active">
                             <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/">Catagory</a>
-                        </li>
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="/" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                            <a className="nav-link dropdown-toggle" href="/" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catagory</a>
                             <div className="dropdown-menu" aria-labelledby="dropdown06">
                                 <a className="dropdown-item" href="/">Action</a>
                                 <a className="dropdown-item" href="/">Another action</a>
@@ -82,7 +79,7 @@ class Navbar extends Component {
                         </li>
                     </ul>
                     <form onSubmit={ this.searchRestaurant } className="form-inline my-2 my-md-0">
-                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search" value={ this.state.postal_code } />
+                        <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search by zip code" value={ this.state.postal_code } />
                     </form>
                     <ul className="navbar-nav">
                         <li className="nav-item">
