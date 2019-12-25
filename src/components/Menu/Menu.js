@@ -12,7 +12,7 @@ const Menu = (props) => {
                 <div className="col p-3 d-flex flex-column position-static">
                     <h3 className="mb-3">{ props.name }</h3>
                     
-                    <p className="card-text mb-2">{ props.menu_description }</p>
+                    <p className="card-text mb-2">{ props.menu_description } <span className="text-info"> Recomment...</span></p>
                     <p className="card-text mb-2">Choice: { props.description }</p>
                     <div className="d-inline-block text-muted">Type: { props.type }</div>
                     {/* { props.price[0] && <p>Price: { props.price[0].priceString }</p> } */}
@@ -20,6 +20,9 @@ const Menu = (props) => {
                         <p className="mb-1 text-muted">Price: </p> 
                     : 
                         <p className="mb-1 text-muted">Price: { props.price[0].priceString }</p> }
+                </div>
+                <div>
+                    <button className="btn btn-info">Add order</button>
                 </div>
             </div>
         </>

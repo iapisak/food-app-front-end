@@ -16,12 +16,12 @@ class RestaurantContainer extends Component {
     }
 
     componentDidMount () {
-        axios.get(`${process.env.REACT_APP_API_URL}/menu/${this.state.restaurant_id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/menu/${this.props.id}`)
         .then(res => {
             this.setState({ menu: res.data.data.menu })
         })
         .catch(() => {
-            fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurant/${this.state.restaurant_id}/menuitems?page=1`, {
+            fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurant/${this.props.id}/menuitems?page=1`, {
                 "method": "GET",
                 "headers": {
                     "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
@@ -43,9 +43,27 @@ class RestaurantContainer extends Component {
         return (
             <>
             <div className="jumbotron p-4 p-md-5 text-white rounded bg-dark">
-                <div className="col-md-6 px-0">
+                <div>
                     <h1 className="display-4 font-italic">{ this.props.name }</h1>
-                    <p className="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+                </div>
+                <div className="d-flex">
+                    <div className="col-md-7 px-0">
+                        <h5 className="font-italic">{ this.props.address.formatted }</h5>
+                        <h5 className="font-italic">Phone number : { this.props.phone }</h5>
+                        <div className="d-flex">
+                        { this.props.cuisines.map(item => (
+                            <p key={ item } className="lead font-italic">{ item }</p>
+                        ))}
+                        <span className="lead font-italic text-info">...edit...</span>
+                        </div>
+                        <button>Write a review</button>
+                        <button>Add photo</button>
+                    </div>
+                    <div>
+                        <h5 className="font-italic">Business Hours</h5>
+                        <div>{ this.props.hours }</div>
+                        <button>Edit business hours</button>
+                    </div>
                 </div>
             </div>
             <h3>Our Menu</h3>
@@ -64,10 +82,10 @@ class RestaurantContainer extends Component {
             <form>
                 <div className="custom-file">
                     <input type="file" className="custom-file-input" id="validatedCustomFile" required />
-                    <label className="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                    <label className="custom-file-label" htmlFor="validatedCustomFile">Choose file...</label>
                 </div>
                 <div className="form-group">
-                    <label for="commentInput">Comment</label>
+                    <label htmlFor="commentInput">Comment</label>
                     <input type="text" className="form-control" id="commentInput" placeholder="Share your comments" />
                 </div>
                 <div className="form-group">

@@ -42,7 +42,6 @@ class Navbar extends Component {
         if (this.state.postal_code.length > 5) {
             this.setState({ postal_code: ''})
             return false
-
         }
         if (this.state.postal_code[0] === "9" && this.state.postal_code[1] === "5") {
             return true
@@ -96,7 +95,7 @@ class Navbar extends Component {
                 .catch(err => console.log(err))
             })
         } else {
-            console.log('Not San Jose area. Please try again')
+            this.props.history.push("/404")
         }
     }
 
