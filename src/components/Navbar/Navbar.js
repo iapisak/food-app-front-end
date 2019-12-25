@@ -55,7 +55,6 @@ class Navbar extends Component {
     handleOnClick = (zip) => {
         axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${zip}`)
         .then(res => {
-            console.log('Yeahhh')
             this.setState({ restaurant: res.data.data.restaurant, photo: res.data.data.photo, name: res.data.data.name })
             this.props.setThisState( [ { ...this.state, postal_code: zip } ] )
             this.props.history.push('/');
@@ -85,6 +84,7 @@ class Navbar extends Component {
                 .then(stream => stream.json())
                 .then(res => {
                     console.log('Loaded new data')
+                    console.log(res.result.data)
                     this.setState({ restaurant: res.result.data, 
                                     name: res.result.data[0].address.city,
                                     fetchLoaded: !this.state.fetchLoaded  })

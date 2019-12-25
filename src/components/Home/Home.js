@@ -12,6 +12,7 @@ const Home = (props) => {
                     <h1 className="display-4 font-italic">{ data.name } <span className="display-small" > - { data.postal_code }</span> </h1>
                     <p className="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
                 </div>
+                <p className="font-italic display-small text-right">Total : { data.restaurant.length } restaurants</p>
             </div>
             <div className="row mb-2">
 
