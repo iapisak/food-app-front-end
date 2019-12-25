@@ -6,7 +6,7 @@ import './Home.css';
 const Home = (props) => {
     return (
         props.restaurants.map(data => (
-        <>
+        <div key={ data.postal_code }>
             <div className="jumbotron p-4 p-md-5 text-white rounded" style={{ backgroundImage:`url('${ data.photo}')` }}>
                 <div className="col-md-6 px-0">
                     <h1 className="display-4 font-italic">{ data.name } <span className="display-small" > - { data.postal_code }</span> </h1>
@@ -25,7 +25,7 @@ const Home = (props) => {
             
             </div>
             
-        </>
+        </div>
     ))
     )
 }
