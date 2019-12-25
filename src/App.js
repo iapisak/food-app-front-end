@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import Navbar from './components/Navbar/Navbar';
 import Routes from './config/Routes';
 
@@ -13,21 +13,15 @@ class App extends Component {
     }
 
     setThisState = (restaurant) => {
-      this.setState({ restaurants: [ restaurant ] })
-    }
-
-    componentDidMount () {
-      axios.get(`${process.env.REACT_APP_API_URL}/restaurant/all`)
-      .then((res) => {
-          this.setState({ restaurants: res.data.data})
-      })
+      this.setState({ restaurants:  restaurant  })
     }
 
     render() {
       return (
         <>
           <Navbar 
-            setThisState={ this.setThisState } />
+            setThisState={ this.setThisState } 
+            menu={ this.state.restaurants } />
           <main className="container">
             <Routes 
               restaurants={ this.state.restaurants } />

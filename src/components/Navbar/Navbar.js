@@ -8,7 +8,17 @@ class Navbar extends Component {
         restaurant: [],
         photo: "",
         name: "",
+        menu: [],
+        fetchLoaded: false,
     }
+
+    componentDidMount () {
+        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/all`)
+        .then((res) => {
+            this.setState({ menu: res.data.data })
+            this.props.setThisState( this.state.menu )
+        })
+      }
 
     handleOnChange = (e) => {
         this.setState({ postal_code: e.target.value })
@@ -32,7 +42,6 @@ class Navbar extends Component {
         if (this.state.postal_code.length > 5) {
             this.setState({ postal_code: ''})
             return false
-
         }
         if (this.state.postal_code[0] === "9" && this.state.postal_code[1] === "5") {
             return true
@@ -40,6 +49,15 @@ class Navbar extends Component {
             this.setState({ postal_code: ''})
             return false
         }
+    }
+
+    handleOnClick = (zip) => {
+        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${zip}`)
+        .then(res => {
+            this.setState({ restaurant: res.data.data.restaurant, photo: res.data.data.photo, name: res.data.data.name })
+            this.props.setThisState( [ { ...this.state, postal_code: zip } ] )
+            this.props.history.push('/');
+        })
     }
 
     searchRestaurant = (e) => {
@@ -50,7 +68,7 @@ class Navbar extends Component {
             .then(res => {
                 console.log('San Jose Area')
                 this.setState({ restaurant: res.data.data.restaurant, photo: res.data.data.photo, name: res.data.data.name })
-                this.props.setThisState( this.state )
+                this.props.setThisState( [ this.state ] )
                 this.setState({ postal_code: ''})
                 this.props.history.push('/');
             })
@@ -65,8 +83,11 @@ class Navbar extends Component {
                 .then(stream => stream.json())
                 .then(res => {
                     console.log('Loaded new data')
-                    this.setState({ restaurant: res.result.data, name: res.result.data[0].address.city })
-                    this.props.setThisState( this.state )
+                    console.log(res.result.data)
+                    this.setState({ restaurant: res.result.data, 
+                                    name: res.result.data[0].address.city,
+                                    fetchLoaded: !this.state.fetchLoaded  })
+                    this.props.setThisState( [ this.state ] )
                     this.createNewRestaurant()
                     this.setState({ postal_code: ''})
                     this.props.history.push('/');
@@ -74,7 +95,7 @@ class Navbar extends Component {
                 .catch(err => console.log(err))
             })
         } else {
-            console.log('Not San Jose area. Please try again')
+            this.props.history.push("/404")
         }
     }
 
@@ -94,9 +115,19 @@ class Navbar extends Component {
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="/" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catagory</a>
                             <div className="dropdown-menu" aria-labelledby="dropdown06">
-                                <a className="dropdown-item" href="/">Action</a>
-                                <a className="dropdown-item" href="/">Another action</a>
-                                <a className="dropdown-item" href="/">Something else here</a>
+                                { this.state.menu.map(city => (
+                                    <div 
+                                        key={ city.postal_code } 
+                                        className="dropdown-item">
+                                        <span
+                                            onClick={()=> { 
+                                                const postal_code = city.postal_code; 
+                                                this.handleOnClick(postal_code) }
+                                            } >
+                                            { city.name }
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </li>
                     </ul>

@@ -14,10 +14,12 @@ const Restaurant = (props) => {
                             { props.name }
                         </Link>
                     </h5>
-                    
                     <p className="card-text mb-auto">{ props.address.formatted }</p>
-                    
-                    <div className="d-inline-block text-muted">Cuisine : { props.cuisines[0] }</div>
+                    <div className="d-flex d-inline-block text-muted">Cuisine : 
+                        { props.cuisines.map((items, index) => (
+                            <div key={ items+index }>{ items }, </div>
+                        ))}
+                    </div>
                     <div className="mb-1 text-muted">Phone no. : { props.phone} </div>
                 </div>
             </div>
