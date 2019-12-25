@@ -2,7 +2,7 @@ import React from 'react';
 
 const Menu = (props) => {
     return (
-        <div>
+        <>
             <div className="row no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
                 <div className="col-auto d-none d-lg-block">
                     <svg className="bd-placeholder-img" width="400" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect>
@@ -22,7 +22,7 @@ const Menu = (props) => {
                         <p className="mb-1 text-muted">Price: { props.price[0].priceString }</p> }
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

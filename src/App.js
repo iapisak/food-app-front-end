@@ -16,13 +16,6 @@ class App extends Component {
       this.setState({ restaurants:  restaurant  })
     }
 
-    // componentDidMount () {
-    //   axios.get(`${process.env.REACT_APP_API_URL}/restaurant/all`)
-    //   .then((res) => {
-    //       this.setState({ restaurants: res.data.data})
-    //   })
-    // }
-
     render() {
       return (
         <>

@@ -49,6 +49,7 @@ class RestaurantContainer extends Component {
                 </div>
             </div>
             <h3>Our Menu</h3>
+            <div>
             { this.state.menu.map(items => (
               <Menu
                 key={ items.item_id }
@@ -59,6 +60,20 @@ class RestaurantContainer extends Component {
                 price={ items.menu_item_pricing }
               />              
             ))}
+            </div>
+            <form>
+                <div className="custom-file">
+                    <input type="file" className="custom-file-input" id="validatedCustomFile" required />
+                    <label className="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                </div>
+                <div className="form-group">
+                    <label for="commentInput">Comment</label>
+                    <input type="text" className="form-control" id="commentInput" placeholder="Share your comments" />
+                </div>
+                <div className="form-group">
+                    <button className="btn btn-primary" type="submit">Submit form</button>
+                </div>
+            </form>
             </>
         )
     }
