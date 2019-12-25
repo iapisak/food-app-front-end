@@ -6,6 +6,8 @@ class Navbar extends Component {
     state = {
         postal_code: "",
         restaurant: [],
+        photo: "",
+        name: "",
     }
 
     handleOnChange = (e) => {
@@ -13,20 +15,41 @@ class Navbar extends Component {
     }
 
     createNewRestaurant = () => {
-        axios.put(`${process.env.REACT_APP_API_URL}/restaurant/create`, this.state)
+        const newState = {
+            postal_code: this.state.postal_code,
+            restaurant: this.state.restaurant,
+            name: this.state.name,
+        }
+
+        axios.put(`${process.env.REACT_APP_API_URL}/restaurant/create`, newState)
         .then(res => {
             console.log(res)
         })
         .catch(err => console.log(err))
     }
 
+    validatedData = () => {
+        if (this.state.postal_code.length > 5) {
+            this.setState({ postal_code: ''})
+            return false
+
+        }
+        if (this.state.postal_code[0] === "9" && this.state.postal_code[1] === "5") {
+            return true
+        } else {
+            this.setState({ postal_code: ''})
+            return false
+        }
+    }
+
     searchRestaurant = (e) => {
         e.preventDefault()
-        if (this.state.postal_code[0] === "9" && this.state.postal_code[1] === "5") {
-            console.log('San Jose Area')
+        const validatedData = this.validatedData() 
+        if (validatedData) {
             axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
             .then(res => {
-                this.setState({ restaurant: res.data.data.restaurant })
+                console.log('San Jose Area')
+                this.setState({ restaurant: res.data.data.restaurant, photo: res.data.data.photo, name: res.data.data.name })
                 this.props.setThisState( this.state )
                 this.setState({ postal_code: ''})
                 this.props.history.push('/');
@@ -41,15 +64,14 @@ class Navbar extends Component {
                 })
                 .then(stream => stream.json())
                 .then(res => {
-                    this.setState({ restaurant: res.result.data })
+                    console.log('Loaded new data')
+                    this.setState({ restaurant: res.result.data, name: res.result.data[0].address.city })
                     this.props.setThisState( this.state )
                     this.createNewRestaurant()
                     this.setState({ postal_code: ''})
                     this.props.history.push('/');
                 })
-                .catch(err => {
-                    console.log(err)
-                })
+                .catch(err => console.log(err))
             })
         } else {
             console.log('Not San Jose area. Please try again')
@@ -59,7 +81,7 @@ class Navbar extends Component {
     render() {
         return (
         <div className="container">
-            <a className="navbar-brand" href="/"><h1>Delivery.com</h1></a>
+            <h1>Delivery.com</h1>
             <nav className="navbar navbar-expand-xl navbar-dark bg-dark">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -78,6 +100,9 @@ class Navbar extends Component {
                             </div>
                         </li>
                     </ul>
+                    <div className="text-white" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="mx-3" role="img" viewBox="0 0 24 24" focusable="false"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
+                    </div>
                     <form onSubmit={ this.searchRestaurant } className="form-inline my-2 my-md-0">
                         <input onChange={ this.handleOnChange } className="form-control" type="text" placeholder="Search by zip code" value={ this.state.postal_code } />
                     </form>
