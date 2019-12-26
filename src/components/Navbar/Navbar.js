@@ -2,23 +2,16 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
+import api from './cities.json'
+
 class Navbar extends Component {
     state = {
         postal_code: "",
         restaurant: [],
         photo: "",
         name: "",
-        menu: [],
-        fetchLoaded: false,
+        city: api,
     }
-
-    componentDidMount () {
-        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/all`)
-        .then((res) => {
-            this.setState({ menu: res.data.data })
-            this.props.setThisState( this.state.menu )
-        })
-      }
 
     handleOnChange = (e) => {
         this.setState({ postal_code: e.target.value })
@@ -26,15 +19,14 @@ class Navbar extends Component {
 
     createNewRestaurant = () => {
         const newState = {
+            photo: this.state.photo,
             postal_code: this.state.postal_code,
             restaurant: this.state.restaurant,
             name: this.state.name,
         }
 
         axios.put(`${process.env.REACT_APP_API_URL}/restaurant/create`, newState)
-        .then(res => {
-            console.log(res)
-        })
+        .then(res => console.log(res))
         .catch(err => console.log(err))
     }
 
@@ -43,60 +35,77 @@ class Navbar extends Component {
             this.setState({ postal_code: ''})
             return false
         }
-        if (this.state.postal_code[0] === "9" && this.state.postal_code[1] === "5") {
+
+        const postal_code = this.state.postal_code
+        const foundPostalCode = this.state.city.find(element => {
+            return element.data.postal_code === postal_code
+        })
+
+        if (foundPostalCode) {
+            this.setState({ photo: foundPostalCode.data.image, 
+                            name: foundPostalCode.data.name })
             return true
         } else {
-            this.setState({ postal_code: ''})
+            this.setState({ postal_code: '',
+                            photo: '',
+                            name: '' })
             return false
         }
     }
 
-    handleOnClick = (zip) => {
-        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${zip}`)
+    fetchLoaded = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
         .then(res => {
             this.setState({ restaurant: res.data.data.restaurant, photo: res.data.data.photo, name: res.data.data.name })
-            this.props.setThisState( [ { ...this.state, postal_code: zip } ] )
+            this.props.setThisState( [ this.state ] )
+            this.setState({ postal_code: '',
+                            photo: '',
+                            name: '', 
+                            restaurant: [], })
             this.props.history.push('/');
         })
+        .catch(() => {
+            fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1`, {
+                method: "GET",
+                headers: {
+                    "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
+                    "x-rapidapi-key": "fe0837f0a2msh7cb5dab4b0d98c6p1b7249jsn44b6d3c3edbf"
+                },
+            })
+            .then(stream => stream.json())
+            .then(res => {
+                this.setState({ restaurant: res.result.data })
+                this.props.setThisState( [ this.state ] )
+                this.createNewRestaurant()
+                this.setState({ postal_code: '',
+                                photo: '',
+                                name: '', 
+                                restaurant: [], })
+                this.props.history.push('/');
+            })
+            .catch(err => console.log(err))
+        }) 
     }
 
     searchRestaurant = (e) => {
         e.preventDefault()
         const validatedData = this.validatedData() 
         if (validatedData) {
-            axios.get(`${process.env.REACT_APP_API_URL}/restaurant/${this.state.postal_code}`)
-            .then(res => {
-                console.log('San Jose Area')
-                this.setState({ restaurant: res.data.data.restaurant, photo: res.data.data.photo, name: res.data.data.name })
-                this.props.setThisState( [ this.state ] )
-                this.setState({ postal_code: ''})
-                this.props.history.push('/');
-            })
-            .catch(() => {
-                fetch(`https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${this.state.postal_code}?page=1`, {
-                    method: "GET",
-                    headers: {
-                        "x-rapidapi-host": "us-restaurant-menus.p.rapidapi.com",
-                        "x-rapidapi-key": "fe0837f0a2msh7cb5dab4b0d98c6p1b7249jsn44b6d3c3edbf"
-                    },
-                })
-                .then(stream => stream.json())
-                .then(res => {
-                    console.log('Loaded new data')
-                    console.log(res.result.data)
-                    this.setState({ restaurant: res.result.data, 
-                                    name: res.result.data[0].address.city,
-                                    fetchLoaded: !this.state.fetchLoaded  })
-                    this.props.setThisState( [ this.state ] )
-                    this.createNewRestaurant()
-                    this.setState({ postal_code: ''})
-                    this.props.history.push('/');
-                })
-                .catch(err => console.log(err))
-            })
+            this.fetchLoaded()
         } else {
             this.props.history.push("/404")
         }
+    }
+
+
+    handleOnClick = async (zip) => {
+        const foundPostalCode = await this.state.city.find(element => {
+            return element.data.postal_code === zip
+        })
+        this.setState({ postal_code: foundPostalCode.data.postal_code,
+                        photo: foundPostalCode.data.image,
+                        name: foundPostalCode.data.name, })
+        this.fetchLoaded()
     }
 
     render() {
@@ -115,16 +124,15 @@ class Navbar extends Component {
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="/" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catagory</a>
                             <div className="dropdown-menu" aria-labelledby="dropdown06">
-                                { this.state.menu.map(city => (
-                                    <div 
-                                        key={ city.postal_code } 
+                                { this.state.city.map(city => (
+                                    <div
+                                        key={ city.data.postal_code } 
                                         className="dropdown-item">
-                                        <span
-                                            onClick={()=> { 
-                                                const postal_code = city.postal_code; 
-                                                this.handleOnClick(postal_code) }
-                                            } >
-                                            { city.name }
+                                        <span 
+                                            onClick={()=> {
+                                                const zip_code = city.data.postal_code
+                                                this.handleOnClick(zip_code) }} >
+                                            { city.data.name }
                                         </span>
                                     </div>
                                 ))}
