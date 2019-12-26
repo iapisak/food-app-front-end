@@ -1,0 +1,47 @@
+[
+    {
+        "_id": 1,
+        "data": 
+            {
+                "name": "San Jose",
+                "postal_code": "95126",
+                "image": "https://cdn.wedding-spot.com/__sized__/images/venues/10062/Sp2-Communal-Bar-Restaurant-San-Jose-CA-cbd7c07f-5e90-4a31-9bf0-e26622d00400-97450e389c42885476f1fbe9bc5bca5a.jpg"
+            }
+    },
+    {
+        "_id": 2,
+        "data": 
+            {
+                "name": "Campbell",
+                "postal_code": "95008",
+                "image": "https://campbellchamber.net/wp-content/uploads/2015/07/screen-shot-2014-04-24-at-20134-pm750xx1247-704-0-195.png"
+            }
+    },
+    {
+        "_id": 3,
+        "data": 
+            {
+                "name": "Milpitas",
+                "postal_code": "95035",
+                "image": "https://live.staticflickr.com/6125/5929214436_88cf4788ca_b.jpg"
+            }
+    },
+    {
+        "_id": 4,
+        "data": 
+            {
+                "name": "Morgan Hill",
+                "postal_code": "95037",
+                "image": "https://www.tripointehomes.com/wp-content/uploads/sites/2/2015/08/morgan-hill-2.jpg"
+            }
+    },
+    {
+        "_id": 5,
+        "data": 
+            {
+                "name": "Santa Clara",
+                "postal_code": "95050",
+                "image": "https://i.pinimg.com/originals/58/1a/d3/581ad388ccc58a078f5e1d18351063d2.jpg"
+            }
+    }
+]
